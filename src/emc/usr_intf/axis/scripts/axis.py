@@ -3076,6 +3076,9 @@ except IOError:
 def jog(*args):
     if not manual_ok(): return
     if not manual_tab_visible(): return
+    if hal_present:
+        if comp["jog.disabled"]:
+            return
     c.jog(*args)
 
 def get_jog_mode():
@@ -3743,7 +3746,8 @@ if hal_present == 1 :
     comp.newpin("notifications-clear-info",hal.HAL_BIT,hal.HAL_IN)
     comp.newpin("notifications-clear-error",hal.HAL_BIT,hal.HAL_IN)
     comp.newpin("resume-inhibit",hal.HAL_BIT,hal.HAL_IN)
-
+    comp.newpin("jog.disabled", hal.HAL_BIT, hal.HAL_IN)
+    comp["jog.disabled"] = 0
     vars.has_ladder.set(hal.component_exists('classicladder_rt'))
 
     if vcp:
